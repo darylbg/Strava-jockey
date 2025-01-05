@@ -1,6 +1,5 @@
 const express = require("express")
 const cors = require("cors");
-const supabase = require("./db/supabase");
 require("dotenv").config();
 
 const app = express();
@@ -18,20 +17,9 @@ const adminRoutes =require("./routes/admin");
 app.use("/", homeRoutes);
 app.use("/admin", adminRoutes);
 
-const supabaseTest = async () => {
-    const {data, error} = await supabase.from("JOCKEYS").select("*");
-
-    if (error) {
-        console.log("SUPABASE connection error")
-    }
-
-    console.log("supabase connected", data);
-}
-
-supabaseTest();
-
+// Start server
 app.listen(PORT, () => {
-    console.log(`express server running on port ${PORT}`);
+    console.log(`express server running on port ${PORT}. ${process.env.PG_USER}`);
 });
 
 
