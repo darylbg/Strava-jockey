@@ -29,6 +29,9 @@ const createTables = async () => {
       CREATE TYPE role_type AS ENUM ('jockey', 'admin');
     `);
 
+    // Enable postgres UUID extension
+    await db.query(`CREATE EXTENSION IF NOT EXISTS "uuid-ossp";`);
+
     // Create `jockeys` table
     await db.query(`
       CREATE TABLE IF NOT EXISTS jockeys (
@@ -48,7 +51,7 @@ const createTables = async () => {
         id SERIAL PRIMARY KEY,
         customer_email VARCHAR(255) NOT NULL,
         customer_name VARCHAR(255) NOT NULL,
-        access_token TEXT,
+        access_token UUID DEFAULT uuid_generate_v4(),
         order_status order_status_type DEFAULT 'pending', -- Default value 'pending'
         amount NUMERIC NOT NULL,
         payment_status payment_status_type DEFAULT 'pending', -- Default value 'pending'
@@ -57,7 +60,7 @@ const createTables = async () => {
         jockey_notes VARCHAR(500),
         distance NUMERIC(10, 2) NOT NULL,
         pace INTERVAL NOT NULL,
-        start_anywhere BOOLEAN NOT NULL DEFAULT TRUE, -- Default value TRUE
+        start_anywhere BOOLEAN NOT NULL,
         start_postcode VARCHAR(255),
         customer_notes VARCHAR(500),
         gpx_file BYTEA,
