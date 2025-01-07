@@ -1,9 +1,9 @@
 const express = require("express");
 const router = express.Router();
-const db = require("../db/connection");
 const bcrypt = require("bcrypt");
+const db = require("../../db/connection");
 
-router.post("/dashboard/register", async (req, res) => {
+router.post("/register", async (req, res) => {
   const { username, email, password } = req.body;
 
   if (!username || !email || !password) {
@@ -28,26 +28,28 @@ router.post("/dashboard/register", async (req, res) => {
   }
 });
 
-// Get all orders
-router.get("/dashboard/orders", async (req, res) => {
+// Get all jockeys
+router.get("/", async (req, res) => {
+  // const { username } = req.params;
+
   try {
     const result = await db.query(
-      `SELECT * FROM orders`
+      `SELECT id, username, email, role FROM jockeys`
     );
 
     if (result.rows.length === 0) {
-      return res.status(404).json({ message: "No orders found" });
+      return res.status(404).json({ message: "no jockeys found" });
     }
 
-    res.status(200).json({ message: "orders", orders: result });
+    res.status(200).json({ message: "jockeys", user: result.rows[0] });
   } catch (error) {
-    console.error("Error fetching orders:", error);
-    res.status(500).json({ message: "Failed to fetch orders", error });
+    console.error("Error fetching jockeys:", error);
+    res.status(500).json({ message: "Failed to fetch jockeys", error });
   }
 });
 
 // Get jockey by username
-router.get("/dashboard/:username", async (req, res) => {
+router.get("/:username", async (req, res) => {
   const { username } = req.params;
 
   try {

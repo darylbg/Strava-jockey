@@ -2,20 +2,8 @@ const express = require("express");
 const router = express.Router();
 const db = require("../db/connection");
 
-// routes needed:
-// create new order /details - done
-// get order by access token /details/:access_token
-// update order by access token /details/:access_token
-
-// Home Page
-router.get("/", (req, res) => {
-  res.send("Welcome to the Home Page!");
-});
-
-// Details Page
-router.get("/details", (req, res) => {
-  res.send("Welcome to the Details Page!");
-});
+// /detail for submission form *publicly accessible
+// /detail/:access_token for user editing of order *publicly accessible
 
 // Create an order
 router.post("/details", async (req, res) => {
@@ -109,6 +97,8 @@ router.get("/details/:access_token", async (req, res) => {
   }
 });
 
+
+// Update an order by access token
 router.put("/details/:access_token", async (req, res) => {
   const { access_token } = req.params;
   const {

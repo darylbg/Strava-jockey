@@ -11,11 +11,14 @@ app.use(express.urlencoded({ limit: "50mb", extended: false }));
 app.use(cors());
 
 // App routes
-const homeRoutes = require("./routes/home");
-const adminRoutes =require("./routes/admin");
+const landingRoutes = require("./routes/landingRoutes");
+const adminRoutes = require("./routes/adminRoutes");
+const dashboardRoutes = require("./routes/dashboardRoutes");
 
-app.use("/", homeRoutes);
+
+app.use("/", landingRoutes); 
 app.use("/admin", adminRoutes);
+app.use("/admin/dashboard", dashboardRoutes);
 
 // Start server
 app.listen(PORT, () => {
