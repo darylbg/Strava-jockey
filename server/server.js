@@ -8,7 +8,13 @@ const PORT = process.env.PORT || 3001;
 // Setup middleware
 app.use(express.json());
 app.use(express.urlencoded({ limit: "50mb", extended: false }));
-app.use(cors());
+app.use(
+    cors({
+      origin: "http://localhost:3000", // Allow requests from this origin
+      methods: ["GET", "POST", "PUT", "DELETE", "PATCH"], // Allow only GET and POST requests
+      allowedHeaders: ["Content-Type", "Authorization"], // Allow specific headers
+    })
+  );
 
 // App routes
 const landingRoutes = require("./routes/landingRoutes");
@@ -16,9 +22,9 @@ const adminRoutes = require("./routes/adminRoutes");
 const dashboardRoutes = require("./routes/dashboardRoutes");
 
 
-app.use("/", landingRoutes); 
-app.use("/admin", adminRoutes);
-app.use("/admin/dashboard", dashboardRoutes);
+app.use("/api", landingRoutes); 
+app.use("/api/admin", adminRoutes);
+app.use("/api/admin/dashboard", dashboardRoutes);
 
 // Start server
 app.listen(PORT, () => {

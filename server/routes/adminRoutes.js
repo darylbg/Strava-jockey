@@ -4,7 +4,7 @@ const db = require("../db/connection");
 const bcrypt = require("bcrypt");
 
 // /admin for admin and jockey login *publicly accessible
-router.post("/", async (req, res) => {
+router.post("/login", async (req, res) => {
   const { email, password } = req.body;
 
   try {
